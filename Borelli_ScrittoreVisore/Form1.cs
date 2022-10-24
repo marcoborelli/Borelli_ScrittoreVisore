@@ -20,6 +20,7 @@ namespace Borelli_ScrittoreVisore
         public Form1()
         {
             InitializeComponent();
+            richTextBox1.ReadOnly = true;
             ilVisualizzatore = new visualizzatore();
             loScrittore = new scrittore(ilVisualizzatore);
         }
@@ -32,10 +33,17 @@ namespace Borelli_ScrittoreVisore
             comboBox1.Items.Add("CORSIVO");
             comboBox1.Items.Add("SOTTOLINEATO");
 
-            comboBox2.Items.Add("Yellow");
-            comboBox2.Items.Add("Black");
-            comboBox2.Items.Add("Red");
-            comboBox2.Items.Add("Green");
+            comboBox2.Items.Add("ROSSO SCURO");
+            comboBox2.Items.Add("ROSSO");
+            comboBox2.Items.Add("GIALLO POLENTA");
+            comboBox2.Items.Add("GIALLO");
+            comboBox2.Items.Add("VERDE CHIARO");
+            comboBox2.Items.Add("VERDE");
+            comboBox2.Items.Add("AZZURRO");
+            comboBox2.Items.Add("BLU");
+            comboBox2.Items.Add("BLU SCURO");
+            comboBox2.Items.Add("VIOLA");
+            comboBox2.Items.Add("NERO");
 
         }
 
@@ -43,8 +51,14 @@ namespace Borelli_ScrittoreVisore
         {
             if (textBox2.Text != "" && comboBox1.Text != "" && comboBox2.Text != "")
             {
+
+                FontStyle font = getFont(ilVisualizzatore.Stile);
+                richTextBox1.ForeColor = getColor(ilVisualizzatore.Colore);
+
+                richTextBox1.Font = new Font("Consolas", 12, font);
+
                 if (switchUser)//questa variabile è true solo quando modifico il nome utente quindi significa che devo andare a capo perchè ha iniziato un nuovo utente
-                { 
+                {
                     vecchiDati = $"{richTextBox1.Text}\n";
                     loScrittore.Nome = textBox2.Text;
                 }
@@ -67,23 +81,8 @@ namespace Borelli_ScrittoreVisore
         }
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
+            //textBox1.Text = "";
             switchUser = true;
-            textBox1.Text = "";
-        }
-        private void button1_Click(object sender, EventArgs e)//invia
-        {
-
-            FontStyle f = richTextBox1.SelectionFont.Style;
-            if (ilVisualizzatore.Stile == 0)
-                f ^= FontStyle.Bold;
-            else if (ilVisualizzatore.Stile == 1)
-                f ^= FontStyle.Italic;
-            else
-                f ^= FontStyle.Underline;
-
-            richTextBox1.SelectionFont=new Font(richTextBox1.SelectionFont,f);
-
-            richTextBox1.Text = $"{loScrittore.Nome.ToUpper()}: {loScrittore.Text}";
         }
 
         public static int ConvertiStileInInt(string stile)
@@ -94,6 +93,40 @@ namespace Borelli_ScrittoreVisore
                 return 1;
             else
                 return 2;
+        }
+        public static FontStyle getFont(int stile)
+        {
+            if (stile == 0)
+                return FontStyle.Bold;
+            else if (stile == 1)
+                return FontStyle.Italic;
+            else
+                return FontStyle.Underline;
+        }
+        public Color getColor(string color)
+        {
+            if (color == "ROSSO SCURO")
+                return Color.DarkRed;
+            else if (color == "ROSSO")
+                return Color.Red;
+            else if (color == "GIALLO POLENTA")
+                return Color.LightGoldenrodYellow;
+            else if (color == "GIALLO")
+                return Color.Yellow;
+            else if (color == "VERDE CHIARO")
+                return Color.LightGreen;
+            else if (color == "VERDE")
+                return Color.Green;
+            else if (color == "AZZURRO")
+                return Color.LightBlue;
+            else if (color == "BLU")
+                return Color.Blue;
+            else if (color == "BLU SCURO")
+                return Color.DarkBlue;
+            else if (color == "VIOLA")
+                return Color.Purple;
+            else
+                return Color.Black;
         }
     }
 }
