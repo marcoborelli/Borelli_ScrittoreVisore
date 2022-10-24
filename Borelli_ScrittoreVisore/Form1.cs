@@ -12,13 +12,16 @@ namespace Borelli_ScrittoreVisore
 {
     public partial class Form1 : Form
     {
-        scrittore scritt;
-        visualizzatore visi;
+        bool switchUser = false;
+        string vecchiDati = "";
+
+        scrittore loScrittore;
+        visualizzatore ilVisualizzatore;
         public Form1()
         {
             InitializeComponent();
-            visi = new visualizzatore();
-            scritt = new scrittore(visi);
+            ilVisualizzatore = new visualizzatore();
+            loScrittore = new scrittore(ilVisualizzatore);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -40,33 +43,47 @@ namespace Borelli_ScrittoreVisore
         {
             if (textBox2.Text != "" && comboBox1.Text != "" && comboBox2.Text != "")
             {
-                scritt.Nome = textBox2.Text;
-                scritt.Stile = ConvertiStileInInt(comboBox1.Text);
-                scritt.Colore = comboBox2.Text;
+                if (switchUser)//questa variabile è true solo quando modifico il nome utente quindi significa che devo andare a capo perchè ha iniziato un nuovo utente
+                { 
+                    vecchiDati = $"{richTextBox1.Text}\n";
+                    loScrittore.Nome = textBox2.Text;
+                }
 
-                if (scritt.Text.Length < textBox1.Text.Length)
-                    scritt.Text += textBox1.Text.Substring(scritt.Text.Length, (textBox1.Text.Length - scritt.Text.Length));
-                else if (scritt.Text.Length > textBox1.Text.Length)
-                    scritt.Text = $"{scritt.Text.Substring(0, textBox1.Text.Length)}";
+                loScrittore.Stile = ConvertiStileInInt(comboBox1.Text);
+                loScrittore.Colore = comboBox2.Text;
+
+                if (loScrittore.Text.Length < textBox1.Text.Length) //vuol dire che ho aggiunto testo
+                    loScrittore.Text += textBox1.Text.Substring(loScrittore.Text.Length, (textBox1.Text.Length - loScrittore.Text.Length));
+                else if (loScrittore.Text.Length > textBox1.Text.Length)//vuol dire che ho cancellato testo
+                    loScrittore.Text = $"{loScrittore.Text.Substring(0, textBox1.Text.Length)}";
+
+                richTextBox1.Text = vecchiDati + $"{loScrittore.Nome.ToUpper()}: {loScrittore.Text}";
+
+                switchUser = false;
 
             }
             else
                 MessageBox.Show("SETTARE PRIMA I VALORI");
         }
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            switchUser = true;
+            textBox1.Text = "";
+        }
         private void button1_Click(object sender, EventArgs e)//invia
         {
 
             FontStyle f = richTextBox1.SelectionFont.Style;
-            if (visi.Stile == 0)
+            if (ilVisualizzatore.Stile == 0)
                 f ^= FontStyle.Bold;
-            else if (visi.Stile == 1)
+            else if (ilVisualizzatore.Stile == 1)
                 f ^= FontStyle.Italic;
             else
                 f ^= FontStyle.Underline;
 
             richTextBox1.SelectionFont=new Font(richTextBox1.SelectionFont,f);
 
-            richTextBox1.Text = $"{scritt.Nome.ToUpper()}: {visi.Text}";
+            richTextBox1.Text = $"{loScrittore.Nome.ToUpper()}: {loScrittore.Text}";
         }
 
         public static int ConvertiStileInInt(string stile)

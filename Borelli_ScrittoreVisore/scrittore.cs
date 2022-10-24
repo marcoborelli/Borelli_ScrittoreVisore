@@ -8,6 +8,8 @@ namespace Borelli_ScrittoreVisore
 {
     public class scrittore
     {
+        private string _nome;
+        private string _text;
         private visualizzatore _vis;
 
         public scrittore (visualizzatore _ilVis)
@@ -15,16 +17,16 @@ namespace Borelli_ScrittoreVisore
             this.Vis = _ilVis;
             this.Text = String.Empty;
         }
-        
+
         public string Nome
         {
             get
             {
-                return _vis.Nome;
+                return _nome;
             }
             set
             {
-                _vis.Nome = value;
+                _nome = value;
             }
         }
         public int Stile
@@ -65,11 +67,11 @@ namespace Borelli_ScrittoreVisore
         {
             get
             {
-                return _vis.Text;
+                return _text;
             }
             set
             {
-                _vis.Text = value;
+                _text = value;
             }
         }
     }
