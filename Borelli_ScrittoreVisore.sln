@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32505.173
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Borelli_ScrittoreVisore", "Borelli_ScrittoreVisore\Borelli_ScrittoreVisore.csproj", "{50A835EF-2749-4680-99AC-F8E383520490}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{50A835EF-2749-4680-99AC-F8E383520490}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50A835EF-2749-4680-99AC-F8E383520490}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50A835EF-2749-4680-99AC-F8E383520490}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50A835EF-2749-4680-99AC-F8E383520490}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {658817E9-65B3-4666-B7C0-19499A34BC63}
+	EndGlobalSection
+EndGlobal
