@@ -41,7 +41,7 @@ namespace Borelli_ScrittoreVisore
 
             comboBox2.Items.Add("ROSSO SCURO"); //tutto l'elenco della combo-box
             comboBox2.Items.Add("ROSSO");
-            comboBox2.Items.Add("GIALLO POLENTA");
+            comboBox2.Items.Add("GIALLOGNOLO");
             comboBox2.Items.Add("GIALLO");
             comboBox2.Items.Add("VERDE CHIARO");
             comboBox2.Items.Add("VERDE");
@@ -154,8 +154,8 @@ namespace Borelli_ScrittoreVisore
                 return Color.DarkRed;
             else if (color == "ROSSO")
                 return Color.Red;
-            else if (color == "GIALLO POLENTA")
-                return Color.LightGoldenrodYellow;
+            else if (color == "GIALLOGNOLO")
+                return Color.YellowGreen;
             else if (color == "GIALLO")
                 return Color.Yellow;
             else if (color == "VERDE CHIARO")
