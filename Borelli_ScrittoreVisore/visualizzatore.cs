@@ -8,10 +8,10 @@ namespace Borelli_ScrittoreVisore
 {
     public class visualizzatore
     {
-        private string _stile;//0= grassetto 1= corsivo 2=sottolineato
+        private string[] _stile;//0= grassetto 1= corsivo 2=sottolineato
         private string _colore;
 
-        public string Stile
+        public string[] Stile
         {
             get
             {

@@ -17,19 +17,28 @@ namespace Borelli_ScrittoreVisore
         bool switchUser = false;
         string vecchiDati = "";
         int cont = 0;
+        CheckBox[] arrayCarino;
 
         scrittore loScrittore;
         visualizzatore ilVisualizzatore;
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Enter))
+                button1.PerformClick();
+            else if (keyData == (Keys.Control | Keys.NumPad1) || (keyData == (Keys.Control | Keys.D1)))//aumenta volume
+                textBox2.Focus();
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
         public Form1()
         {
             InitializeComponent();
+
             richTextBox1.ReadOnly = true;
+
             ilVisualizzatore = new visualizzatore();
             loScrittore = new scrittore(ilVisualizzatore);
-        }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList; //1=tipoScrittura 2=colore
 
             comboBox2.Items.Add("ROSSO SCURO");
@@ -43,9 +52,14 @@ namespace Borelli_ScrittoreVisore
             comboBox2.Items.Add("BLU SCURO");
             comboBox2.Items.Add("VIOLA");
             comboBox2.Items.Add("NERO");
+        }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
             comboBox2.Text = "NERO";
-
+            textBox1.Text = "";
+            checkBox1.Checked = checkBox2.Checked = checkBox3.Checked = false;
+            //textBox2.Text = "Marco";
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -56,12 +70,27 @@ namespace Borelli_ScrittoreVisore
                 loScrittore.Nome = textBox2.Text;
                 loScrittore.Colore = comboBox2.Text;
 
-                if (checkBox1.Checked)
+                /*if (checkBox1.Checked)
                     loScrittore.Stile = checkBox1.Text;
                 else if (checkBox2.Checked)
                     loScrittore.Stile = checkBox2.Text;
                 else if (checkBox3.Checked)
-                    loScrittore.Stile = checkBox3.Text;
+                    loScrittore.Stile = checkBox3.Text;*/
+                arrayCarino = new CheckBox[] { checkBox1, checkBox2, checkBox3 };
+
+                int count = getNumeroCaselleSelez(arrayCarino);
+                loScrittore.Stile = new string[count];
+                int k = 0;
+                for (int i = 0; i < arrayCarino.Length; i++)
+                {
+                    if (arrayCarino[i].Checked)
+                    {
+                        loScrittore.Stile[k] = arrayCarino[i].Text;
+                        k++;
+                    }
+                    //if (i + 1 == count)
+                        //break;
+                }
 
                 if (loScrittore.Text.Length < textBox1.Text.Length) //vuol dire che ho aggiunto testo
                     loScrittore.Text += textBox1.Text.Substring(loScrittore.Text.Length, (textBox1.Text.Length - loScrittore.Text.Length));
@@ -75,12 +104,13 @@ namespace Borelli_ScrittoreVisore
             }
             else
                 MessageBox.Show("SETTARE PRIMA I VALORI");
+
         }
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             //textBox1.Text = "";
             //if (!switchUser)//perchè senò la prima volta che inserisco username va a capo
-                //cont++;
+            //cont++;
 
             switchUser = true;
 
@@ -89,19 +119,45 @@ namespace Borelli_ScrittoreVisore
         {
             //if (!switchUser)
             //{
-            textBox1_TextChanged(sender, e);//nel caso in cui non si metta nulla almeno mi salvo il nick dell'utente
-                Font fontt = richTextBox1.SelectionFont;
-                if (fontt != null)
-                {
-                    FontStyle f = getFont(ilVisualizzatore.Stile);
-                    richTextBox1.SelectionFont = new Font(fontt, f);
-                }
-                richTextBox1.SelectionColor = getColor(ilVisualizzatore.Colore);
 
-                richTextBox1.AppendText($"{loScrittore.Nome}: {textBox1.Text}\n");
+            textBox1_TextChanged(sender, e);//nel caso in cui non si metta nulla almeno mi salvo il nick dell'utente
+
+            /*string uwu = "";
+            for (int i = 0; i < ilVisualizzatore.Stile.Length; i++)
+                uwu += $"{ilVisualizzatore.Stile[i]}\n";
+
+            MessageBox.Show($"{uwu}");*/
+
+
+            Font fontt = richTextBox1.SelectionFont;
+            if (fontt != null)
+            {
+                FontStyle f=FontStyle.Regular; //lo inizializzo così poi cambio alla peggio
+
+                for (int i = 0; i < getNumeroCaselleSelez(arrayCarino)/*-1*/;i++)
+                    f ^= (getFont(ilVisualizzatore.Stile[i]));
+
+                //f = (getFont(ilVisualizzatore.Stile[i]) | getFont(ilVisualizzatore.Stile[i+1]));
+
+                richTextBox1.SelectionFont = new Font(fontt, f);
+            }
+            richTextBox1.SelectionColor = getColor(ilVisualizzatore.Colore);
+
+            richTextBox1.AppendText($"{loScrittore.Nome}: {textBox1.Text}\n");
             //}
         }
 
+        public static int getNumeroCaselleSelez(CheckBox[] check)
+        {
+            int count = 0;
+            for (int i = 0; i < check.Length; i++)
+            {
+                if (check[i].Checked)
+                    count++;
+            }
+
+            return count;
+        }
         public static FontStyle getFont(string stile)
         {
             if (stile == "GRASSETTO")

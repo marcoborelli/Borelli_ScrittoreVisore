@@ -29,7 +29,7 @@ namespace Borelli_ScrittoreVisore
                 _nome = value;
             }
         }
-        public string Stile
+        public string[] Stile
         {
             get
             {

@@ -57,9 +57,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(37, 244);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(39, 13);
+            this.label1.Size = new System.Drawing.Size(88, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "NOME";
+            this.label1.Text = "NOME [CRTL+1]";
             // 
             // label2
             // 
@@ -97,6 +97,7 @@
             // 
             // richTextBox1
             // 
+            this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.Location = new System.Drawing.Point(390, 50);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(313, 336);
@@ -157,7 +158,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(109, 37);
             this.button1.TabIndex = 13;
-            this.button1.Text = "INVIA";
+            this.button1.Text = "INVIA [ENTER}";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
