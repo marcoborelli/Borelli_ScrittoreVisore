@@ -14,6 +14,7 @@ namespace Borelli_ScrittoreVisore
     {
         bool switchUser = false;
         string vecchiDati = "";
+        int cont = 0;
 
         scrittore loScrittore;
         visualizzatore ilVisualizzatore;
@@ -27,11 +28,7 @@ namespace Borelli_ScrittoreVisore
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            comboBox1.DropDownStyle = comboBox2.DropDownStyle = ComboBoxStyle.DropDownList; //1=tipoScrittura 2=colore
-
-            comboBox1.Items.Add("GRASSETTO");
-            comboBox1.Items.Add("CORSIVO");
-            comboBox1.Items.Add("SOTTOLINEATO");
+            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList; //1=tipoScrittura 2=colore
 
             comboBox2.Items.Add("ROSSO SCURO");
             comboBox2.Items.Add("ROSSO");
@@ -49,7 +46,7 @@ namespace Borelli_ScrittoreVisore
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            if (textBox2.Text != "" && comboBox1.Text != "" && comboBox2.Text != "")
+            if (textBox2.Text != "" && comboBox2.Text != ""&& (checkBox1.Checked || checkBox2.Checked || checkBox3.Checked))
             {
 
                 FontStyle font = getFont(ilVisualizzatore.Stile);
@@ -57,13 +54,18 @@ namespace Borelli_ScrittoreVisore
 
                 richTextBox1.Font = new Font("Consolas", 12, font);
 
-                if (switchUser)//questa variabile è true solo quando modifico il nome utente quindi significa che devo andare a capo perchè ha iniziato un nuovo utente
-                {
+                if (switchUser && cont != 1)//questa variabile è true solo quando modifico il nome utente quindi significa che devo andare a capo perchè ha iniziato un nuovo utente
                     vecchiDati = $"{richTextBox1.Text}\n";
-                    loScrittore.Nome = textBox2.Text;
-                }
 
-                loScrittore.Stile = ConvertiStileInInt(comboBox1.Text);
+                loScrittore.Nome = textBox2.Text;
+
+                if (checkBox1.Checked)
+                    loScrittore.Stile = checkBox1.Text;
+                else if (checkBox2.Checked)
+                    loScrittore.Stile = checkBox2.Text;
+                else if (checkBox3.Checked)
+                    loScrittore.Stile = checkBox3.Text;
+
                 loScrittore.Colore = comboBox2.Text;
 
                 if (loScrittore.Text.Length < textBox1.Text.Length) //vuol dire che ho aggiunto testo
@@ -82,23 +84,18 @@ namespace Borelli_ScrittoreVisore
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             //textBox1.Text = "";
+            if (!switchUser)//perchè senò la prima volta che inserisco username va a capo
+                cont++;
+
             switchUser = true;
+
         }
 
-        public static int ConvertiStileInInt(string stile)
+        public static FontStyle getFont(string stile)
         {
             if (stile == "GRASSETTO")
-                return 0;
-            else if (stile == "CORSIVO")
-                return 1;
-            else
-                return 2;
-        }
-        public static FontStyle getFont(int stile)
-        {
-            if (stile == 0)
                 return FontStyle.Bold;
-            else if (stile == 1)
+            else if (stile == "CORSIVO")
                 return FontStyle.Italic;
             else
                 return FontStyle.Underline;

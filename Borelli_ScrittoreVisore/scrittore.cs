@@ -29,7 +29,7 @@ namespace Borelli_ScrittoreVisore
                 _nome = value;
             }
         }
-        public int Stile
+        public string Stile
         {
             get
             {
@@ -37,7 +37,6 @@ namespace Borelli_ScrittoreVisore
             }
             set
             {
-                if (value >= 0 && value < 4)//controllo che vada bene
                     _vis.Stile = value;
             }
         }

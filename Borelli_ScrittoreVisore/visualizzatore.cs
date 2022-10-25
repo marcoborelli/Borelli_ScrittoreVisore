@@ -8,10 +8,10 @@ namespace Borelli_ScrittoreVisore
 {
     public class visualizzatore
     {
-        private int _stile;//0= grassetto 1= corsivo 2=sottolineato
+        private string _stile;//0= grassetto 1= corsivo 2=sottolineato
         private string _colore;
 
-        public int Stile
+        public string Stile
         {
             get
             {
@@ -19,8 +19,7 @@ namespace Borelli_ScrittoreVisore
             }
             set
             {
-                if (value >= 0 && value < 4)//controllo che vada bene
-                    _stile = value;
+                _stile = value;
             }
         }
         public string Colore
