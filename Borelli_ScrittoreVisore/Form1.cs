@@ -8,15 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using System.Windows.Forms.VisualStyles;
-
 namespace Borelli_ScrittoreVisore
 {
     public partial class Form1 : Form
     {
-        bool switchUser = false;
+        /*bool switchUser = false;
         string vecchiDati = "";
-        int cont = 0;
+        int cont = 0;*/
         CheckBox[] arrayCarino;
 
         scrittore loScrittore;
@@ -34,14 +32,14 @@ namespace Borelli_ScrittoreVisore
         {
             InitializeComponent();
 
-            richTextBox1.ReadOnly = true;
+            richTextBox1.ReadOnly = true;//così non posso scriverci ed è di sola lettura
 
             ilVisualizzatore = new visualizzatore();
             loScrittore = new scrittore(ilVisualizzatore);
 
-            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList; //1=tipoScrittura 2=colore
+            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList; 
 
-            comboBox2.Items.Add("ROSSO SCURO");
+            comboBox2.Items.Add("ROSSO SCURO"); //tutto l'elenco della combo-box
             comboBox2.Items.Add("ROSSO");
             comboBox2.Items.Add("GIALLO POLENTA");
             comboBox2.Items.Add("GIALLO");
@@ -57,7 +55,7 @@ namespace Borelli_ScrittoreVisore
         private void Form1_Load(object sender, EventArgs e)
         {
             comboBox2.Text = "NERO";
-            textBox1.Text = "";
+            textBox1.Text = "";//è quella in cui scrivo il testo
             checkBox1.Checked = checkBox2.Checked = checkBox3.Checked = false;
             //textBox2.Text = "Marco";
         }
@@ -70,12 +68,6 @@ namespace Borelli_ScrittoreVisore
                 loScrittore.Nome = textBox2.Text;
                 loScrittore.Colore = comboBox2.Text;
 
-                /*if (checkBox1.Checked)
-                    loScrittore.Stile = checkBox1.Text;
-                else if (checkBox2.Checked)
-                    loScrittore.Stile = checkBox2.Text;
-                else if (checkBox3.Checked)
-                    loScrittore.Stile = checkBox3.Text;*/
                 arrayCarino = new CheckBox[] { checkBox1, checkBox2, checkBox3 };
 
                 int count = getNumeroCaselleSelez(arrayCarino);
@@ -88,8 +80,6 @@ namespace Borelli_ScrittoreVisore
                         loScrittore.Stile[k] = arrayCarino[i].Text;
                         k++;
                     }
-                    //if (i + 1 == count)
-                        //break;
                 }
 
                 if (loScrittore.Text.Length < textBox1.Text.Length) //vuol dire che ho aggiunto testo
@@ -99,20 +89,9 @@ namespace Borelli_ScrittoreVisore
 
                 //richTextBox1.Text = vecchiDati + $"{loScrittore.Nome.ToUpper()}: {loScrittore.Text}";
 
-                switchUser = false;
-
             }
             else
                 MessageBox.Show("SETTARE PRIMA I VALORI");
-
-        }
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-            //textBox1.Text = "";
-            //if (!switchUser)//perchè senò la prima volta che inserisco username va a capo
-            //cont++;
-
-            switchUser = true;
 
         }
         private void button1_Click(object sender, EventArgs e)//invia
