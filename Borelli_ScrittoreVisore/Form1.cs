@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using System.Windows.Forms.VisualStyles;
+
 namespace Borelli_ScrittoreVisore
 {
     public partial class Form1 : Form
@@ -42,22 +44,17 @@ namespace Borelli_ScrittoreVisore
             comboBox2.Items.Add("VIOLA");
             comboBox2.Items.Add("NERO");
 
+            comboBox2.Text = "NERO";
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            if (textBox2.Text != "" && comboBox2.Text != ""&& (checkBox1.Checked || checkBox2.Checked || checkBox3.Checked))
+            if (textBox2.Text != "" && comboBox2.Text != "" /*&& (checkBox1.Checked || checkBox2.Checked || checkBox3.Checked)*/)
             {
 
-                FontStyle font = getFont(ilVisualizzatore.Stile);
-                richTextBox1.ForeColor = getColor(ilVisualizzatore.Colore);
-
-                richTextBox1.Font = new Font("Consolas", 12, font);
-
-                if (switchUser && cont != 1)//questa variabile è true solo quando modifico il nome utente quindi significa che devo andare a capo perchè ha iniziato un nuovo utente
-                    vecchiDati = $"{richTextBox1.Text}\n";
-
                 loScrittore.Nome = textBox2.Text;
+                loScrittore.Colore = comboBox2.Text;
 
                 if (checkBox1.Checked)
                     loScrittore.Stile = checkBox1.Text;
@@ -66,14 +63,12 @@ namespace Borelli_ScrittoreVisore
                 else if (checkBox3.Checked)
                     loScrittore.Stile = checkBox3.Text;
 
-                loScrittore.Colore = comboBox2.Text;
-
                 if (loScrittore.Text.Length < textBox1.Text.Length) //vuol dire che ho aggiunto testo
                     loScrittore.Text += textBox1.Text.Substring(loScrittore.Text.Length, (textBox1.Text.Length - loScrittore.Text.Length));
                 else if (loScrittore.Text.Length > textBox1.Text.Length)//vuol dire che ho cancellato testo
                     loScrittore.Text = $"{loScrittore.Text.Substring(0, textBox1.Text.Length)}";
 
-                richTextBox1.Text = vecchiDati + $"{loScrittore.Nome.ToUpper()}: {loScrittore.Text}";
+                //richTextBox1.Text = vecchiDati + $"{loScrittore.Nome.ToUpper()}: {loScrittore.Text}";
 
                 switchUser = false;
 
@@ -84,11 +79,27 @@ namespace Borelli_ScrittoreVisore
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             //textBox1.Text = "";
-            if (!switchUser)//perchè senò la prima volta che inserisco username va a capo
-                cont++;
+            //if (!switchUser)//perchè senò la prima volta che inserisco username va a capo
+                //cont++;
 
             switchUser = true;
 
+        }
+        private void button1_Click(object sender, EventArgs e)//invia
+        {
+            //if (!switchUser)
+            //{
+            textBox1_TextChanged(sender, e);//nel caso in cui non si metta nulla almeno mi salvo il nick dell'utente
+                Font fontt = richTextBox1.SelectionFont;
+                if (fontt != null)
+                {
+                    FontStyle f = getFont(ilVisualizzatore.Stile);
+                    richTextBox1.SelectionFont = new Font(fontt, f);
+                }
+                richTextBox1.SelectionColor = getColor(ilVisualizzatore.Colore);
+
+                richTextBox1.AppendText($"{loScrittore.Nome}: {textBox1.Text}\n");
+            //}
         }
 
         public static FontStyle getFont(string stile)
@@ -97,8 +108,10 @@ namespace Borelli_ScrittoreVisore
                 return FontStyle.Bold;
             else if (stile == "CORSIVO")
                 return FontStyle.Italic;
-            else
+            else if (stile == "SOTTOLINEATO")
                 return FontStyle.Underline;
+            else
+                return FontStyle.Regular;
         }
         public Color getColor(string color)
         {
@@ -121,7 +134,7 @@ namespace Borelli_ScrittoreVisore
             else if (color == "BLU SCURO")
                 return Color.DarkBlue;
             else if (color == "VIOLA")
-                return Color.Purple;
+                return Color.DarkViolet;
             else
                 return Color.Black;
         }
