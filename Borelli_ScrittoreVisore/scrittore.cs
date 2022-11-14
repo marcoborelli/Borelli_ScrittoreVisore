@@ -4,18 +4,40 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Drawing;
+
 namespace Borelli_ScrittoreVisore
 {
-    public class scrittore
+    public class Scrittore
     {
         private string _nome;
-        private string _text;
-        private visualizzatore _vis;
+        private Visualizzatore _vis;
 
-        public scrittore (visualizzatore _ilVis)
+        public Scrittore(Visualizzatore _ilVis)
         {
             this.Vis = _ilVis;
-            this.Text = String.Empty;
+        }
+
+        public void setGrassetto(bool g)
+        {
+            _vis.Grassetto = g;
+        }
+        public void setSottolineato(bool s)
+        {
+            _vis.Sottolineato = s;
+        }
+        public void setCorsivo(bool c)
+        {
+            _vis.Corsivo = c;
+        }
+        public void setColore(Color col)
+        {
+            _vis.Colore = col;
+        }
+
+        public void aggiungiTesto(string testo)
+        {
+            _vis.visualizza(this.Nome, testo);
         }
 
         public string Nome
@@ -29,18 +51,8 @@ namespace Borelli_ScrittoreVisore
                 _nome = value;
             }
         }
-        public string[] Stile
-        {
-            get
-            {
-                return _vis.Stile;
-            }
-            set
-            {
-                    _vis.Stile = value;
-            }
-        }
-        public visualizzatore Vis
+
+        public Visualizzatore Vis
         {
             get
             {
@@ -48,29 +60,10 @@ namespace Borelli_ScrittoreVisore
             }
             set
             {
-                _vis = value;
-            }
-        }
-        public string Colore
-        {
-            get
-            {
-                return _vis.Colore;
-            }
-            set
-            {
-                _vis.Colore = value;
-            }
-        }
-        public string Text
-        {
-            get
-            {
-                return _text;
-            }
-            set
-            {
-                _text = value;
+                if (value != null)
+                    _vis = value;
+                else
+                    throw new Exception("Inserire un visualizzatore valido");
             }
         }
     }

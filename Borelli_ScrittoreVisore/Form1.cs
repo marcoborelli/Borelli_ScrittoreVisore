@@ -15,10 +15,9 @@ namespace Borelli_ScrittoreVisore
         /*bool switchUser = false;
         string vecchiDati = "";
         int cont = 0;*/
-        CheckBox[] arrayCarino;
 
-        scrittore loScrittore;
-        visualizzatore ilVisualizzatore;
+        Scrittore loScrittore;
+        Visualizzatore ilVisualizzatore;
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -34,10 +33,10 @@ namespace Borelli_ScrittoreVisore
 
             richTextBox1.ReadOnly = true;//così non posso scriverci ed è di sola lettura
 
-            ilVisualizzatore = new visualizzatore();
-            loScrittore = new scrittore(ilVisualizzatore);
+            ilVisualizzatore = new Visualizzatore(richTextBox1);
+            loScrittore = new Scrittore(ilVisualizzatore);
 
-            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList; 
+            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
 
             comboBox2.Items.Add("ROSSO SCURO"); //tutto l'elenco della combo-box
             comboBox2.Items.Add("ROSSO");
@@ -64,31 +63,13 @@ namespace Borelli_ScrittoreVisore
         {
             if (textBox2.Text != "" && comboBox2.Text != "" /*&& (checkBox1.Checked || checkBox2.Checked || checkBox3.Checked)*/)
             {
-
                 loScrittore.Nome = textBox2.Text;
-                loScrittore.Colore = comboBox2.Text;
 
-                arrayCarino = new CheckBox[] { checkBox1, checkBox2, checkBox3 };
+                loScrittore.setColore(getColor(comboBox2.Text));
 
-                int count = getNumeroCaselleSelez(arrayCarino);
-                loScrittore.Stile = new string[count];
-                int k = 0;
-                for (int i = 0; i < arrayCarino.Length; i++)
-                {
-                    if (arrayCarino[i].Checked)
-                    {
-                        loScrittore.Stile[k] = arrayCarino[i].Text;
-                        k++;
-                    }
-                }
-
-                if (loScrittore.Text.Length < textBox1.Text.Length) //vuol dire che ho aggiunto testo
-                    loScrittore.Text += textBox1.Text.Substring(loScrittore.Text.Length, (textBox1.Text.Length - loScrittore.Text.Length));
-                else if (loScrittore.Text.Length > textBox1.Text.Length)//vuol dire che ho cancellato testo
-                    loScrittore.Text = $"{loScrittore.Text.Substring(0, textBox1.Text.Length)}";
-
-                //richTextBox1.Text = vecchiDati + $"{loScrittore.Nome.ToUpper()}: {loScrittore.Text}";
-
+                loScrittore.setGrassetto(checkBox1.Checked);
+                loScrittore.setCorsivo(checkBox3.Checked);
+                loScrittore.setSottolineato(checkBox2.Checked);
             }
             else
                 MessageBox.Show("SETTARE PRIMA I VALORI");
@@ -96,57 +77,8 @@ namespace Borelli_ScrittoreVisore
         }
         private void button1_Click(object sender, EventArgs e)//invia
         {
-            //if (!switchUser)
-            //{
-
             textBox1_TextChanged(sender, e);//nel caso in cui non si metta nulla almeno mi salvo il nick dell'utente
-
-            /*string uwu = "";
-            for (int i = 0; i < ilVisualizzatore.Stile.Length; i++)
-                uwu += $"{ilVisualizzatore.Stile[i]}\n";
-
-            MessageBox.Show($"{uwu}");*/
-
-
-            Font fontt = richTextBox1.SelectionFont;
-            if (fontt != null)
-            {
-                FontStyle f=FontStyle.Regular; //lo inizializzo così poi cambio alla peggio
-
-                for (int i = 0; i < getNumeroCaselleSelez(arrayCarino)/*-1*/;i++)
-                    f ^= (getFont(ilVisualizzatore.Stile[i]));
-
-                //f = (getFont(ilVisualizzatore.Stile[i]) | getFont(ilVisualizzatore.Stile[i+1]));
-
-                richTextBox1.SelectionFont = new Font(fontt, f);
-            }
-            richTextBox1.SelectionColor = getColor(ilVisualizzatore.Colore);
-
-            richTextBox1.AppendText($"{loScrittore.Nome}: {textBox1.Text}\n");
-            //}
-        }
-
-        public static int getNumeroCaselleSelez(CheckBox[] check)
-        {
-            int count = 0;
-            for (int i = 0; i < check.Length; i++)
-            {
-                if (check[i].Checked)
-                    count++;
-            }
-
-            return count;
-        }
-        public static FontStyle getFont(string stile)
-        {
-            if (stile == "GRASSETTO")
-                return FontStyle.Bold;
-            else if (stile == "CORSIVO")
-                return FontStyle.Italic;
-            else if (stile == "SOTTOLINEATO")
-                return FontStyle.Underline;
-            else
-                return FontStyle.Regular;
+            loScrittore.aggiungiTesto(textBox1.Text);
         }
         public Color getColor(string color)
         {
